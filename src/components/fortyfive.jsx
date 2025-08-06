@@ -1,9 +1,10 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./extra.css";
 
-const thirty = () => {
-  const [totalSeconds, setTotalSeconds] = useState(45 * 60);
+const Thirty = () => {
+  const INITIAL_TIME = 45 * 60; // 15 minutes in seconds
+
+  const [totalSeconds, setTotalSeconds] = useState(INITIAL_TIME);
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
@@ -11,6 +12,7 @@ const thirty = () => {
       const timer = setTimeout(() => {
         setTotalSeconds((prev) => prev - 1);
       }, 1000);
+
       return () => clearTimeout(timer);
     } else if (totalSeconds === 0) {
       setIsRunning(false);
@@ -19,35 +21,51 @@ const thirty = () => {
 
   const startTimer = () => {
     if (totalSeconds === 0) {
-      setTotalSeconds(total);
+      setTotalSeconds(INITIAL_TIME);
     }
     setIsRunning(true);
   };
 
-  const stoptimer = () => {
+  const stopTimer = () => {
     setIsRunning(false);
   };
-  const displayhours = Math.floor(totalSeconds / 3600);
-  const displayminutes = Math.floor((totalSeconds % 3600) / 60);
-  const displayseconds = Math.floor(totalSeconds % 60);
+
+  const resetTimer = () => {
+    if (!isRunning) {
+      setTotalSeconds(INITIAL_TIME);
+    } else {
+      alert("Pause the timer before resetting");
+    }
+  };
+
+  const displayHours = Math.floor(totalSeconds / 3600);
+  const displayMinutes = Math.floor((totalSeconds % 3600) / 60);
+  const displaySeconds = totalSeconds % 60;
+
   return (
     <div className="div-extra">
       <p className="title-extra">45 Minutes</p>
 
       <p className="time-display-extra">
-        {String(displayhours).padStart(2, "0")}:
-        {String(displayminutes).padStart(2, "0")}:
-        {String(displayseconds).padStart(2, "0")}
+        {String(displayHours).padStart(2, "0")}:
+        {String(displayMinutes).padStart(2, "0")}:
+        {String(displaySeconds).padStart(2, "0")}
       </p>
 
-      <button
-        className="time-display-btn-extra"
-        onClick={isRunning ? stoptimer : startTimer}
-      >
-        {isRunning ? "Pause" : "Start"}
-      </button>
+      <div className="btn-divs">
+        <button
+          className="time-display-btn-extra"
+          onClick={isRunning ? stopTimer : startTimer}
+        >
+          {isRunning ? "PAUSE" : "START"}
+        </button>
+
+        <button className="time-display-btn-extra" onClick={resetTimer}>
+          RESET
+        </button>
+      </div>
     </div>
   );
 };
 
-export default thirty;
+export default Thirty;

@@ -22,9 +22,15 @@
 .time-display-btn-extra{
     height: 40px;
     width: 75px;
-    margin-left: 65px;
+    
     margin-top: 10px;
     font-weight: 900;
     border: 2px solid black;
     border-radius: 3px;
+}
+
+.btn-divs{
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
 }
