@@ -10,6 +10,11 @@ const App = () => {
   const [seconds, setSeconds] = useState(0);
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [initialTime, setInitialTime] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   useEffect(() => {
     if (isRunning && totalSeconds > 0) {
@@ -26,6 +31,14 @@ const App = () => {
     if (totalSeconds === 0) {
       const total =
         parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds);
+
+      // Save the original input
+      setInitialTime({
+        hours: parseInt(hours),
+        minutes: parseInt(minutes),
+        seconds: parseInt(seconds),
+      });
+
       setTotalSeconds(total);
     }
     setIsRunning(true);
@@ -34,6 +47,24 @@ const App = () => {
   const stoptimer = () => {
     setIsRunning(false);
   };
+
+  function resetTimer() {
+    if (isRunning == false) {
+      setIsRunning(false);
+
+      const total =
+        initialTime.hours * 3600 +
+        initialTime.minutes * 60 +
+        initialTime.seconds;
+
+      setTotalSeconds(total);
+      setHours(initialTime.hours);
+      setMinutes(initialTime.minutes);
+      setSeconds(initialTime.seconds);
+    }else{
+      alert("pause and reset")
+    }
+  }
 
   const displayhours = Math.floor(totalSeconds / 3600);
   const displayminutes = Math.floor((totalSeconds % 3600) / 60);
@@ -74,6 +105,7 @@ const App = () => {
         >
           {isRunning ? "PAUSE" : "START"}
         </button>
+        <button className="button-timer" onClick={resetTimer}>RESET</button>
       </div>
 
       <div className="extra">
